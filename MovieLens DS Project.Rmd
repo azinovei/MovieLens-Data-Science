@@ -226,8 +226,8 @@ The lower the better.
 
 The first basic model predicts the same rating for all movies, so we compute the dataset’s mean rating. The expected rating of the underlying data set is between 3 and 4.
 We start by building the simplest possible recommender system by predicting the same rating for all movies regardless of user who give it. A model based approach assumes the same rating for all movie with all differences explained by random variation :
-$$ Y_{u, i} = \mu + \epsilon_{u, i} $$
-with $\epsilon_{u,i}$ independent error sample from the same distribution centered at 0 and $\mu$ the “true” rating for all movies. This very simple model makes the assumption that all differences in movie ratings are explained by random variation alone. We know that the estimate that minimize the RMSE is the least square estimate of $Y_{u,i}$ , in this case, is the average of all ratings:
+$$ Y_{u, i} = \mean_of_ratings + \epsilon_{u, i} $$
+with $\epsilon_{u,i}$ independent error sample from the same distribution centered at 0 and $\mean_of_ratings$ the “true” rating for all movies. This very simple model makes the assumption that all differences in movie ratings are explained by random variation alone. We know that the estimate that minimize the RMSE is the least square estimate of $Y_{u,i}$ , in this case, is the average of all ratings:
 The expected rating of the underlying data set is between 3 and 4.
 
 ```{r, echo = TRUE}
@@ -323,17 +323,18 @@ averages_per_user <- edx %>%
 We can now construct predictors and see RMSE improves:
 
 
-```{r model_2_rmse, echo = TRUE}
+```{r 2nd_model_rmse, echo = TRUE}
 forecasted_ratings <- validation%>%
   left_join(movie_averages, by='movieId') %>%
   left_join(averages_per_user, by='userId') %>%
   mutate(pred = mean_of_ratings+ b_i + b_u) %>%
   pull(pred)
 
-2nd_model_rmse  <- RMSE(forecasted_ratings, validation$rating)
+
+nd_model_rmse <- RMSE(forecasted_ratings, validation$rating)
 rmse_results <- bind_rows(rmse_results,
                           data_frame(method="Movie and user effect model",  
-                                     RMSE = 2nd_model_rmse ))
+                                     RMSE = nd_model_rmse ))
 
 ```
 
