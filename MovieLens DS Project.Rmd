@@ -282,10 +282,10 @@ Our prediction improve once we predict using this model.
 forecasted_ratings <- mean_of_ratings+  validation %>%
   left_join(movie_averages, by='movieId') %>%
   pull(b_i)
-1st_model_rmse <- RMSE(forecasted_ratings, validation$rating)
+st_model_rmse <- RMSE(forecasted_ratings, validation$rating)
 rmse_results <- bind_rows(rmse_results,
                           data_frame(method="Movie effect model",  
-                                     RMSE = 1st_model_rmse ))
+                                     RMSE = st_model_rmse ))
 ```
 
 
